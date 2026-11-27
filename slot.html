@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lucky ChaCha Slots</title>
+<style>
+:root {
+  --cell: 76px;
+  --gold: #f5c542;
+  --panel: #241d3d;
+  --panel2: #2d2450;
+  --border: #4a3f7a;
+  --text: #efe9ff;
+  --dim: #a99cc9;
+  --red: #ff5d5d;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  min-height: 100vh;
+  background: radial-gradient(1200px 800px at 50% -10%, #2b2150 0%, #141021 55%, #0d0a17 100%);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 24px 12px 48px;
+}
+.machine {
+  width: min(560px, 100%);
+  background: linear-gradient(180deg, var(--panel2), var(--panel));
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px 18px 26px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
+}
+h1 {
+  margin: 0 0 14px;
+  text-align: center;
+  font-size: 1.35rem;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-shadow: 0 2px 10px rgba(245,197,66,.35);
+}
+.hud { display: flex; gap: 12px; margin-bottom: 14px; }
+.stat {
+  flex: 1;
+  background: rgba(0,0,0,.28);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex; align-items: baseline; gap: 6px;
+}
+.stat .label { font-size: .72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--dim); margin-right: auto; }
+.stat .value { font-size: 1.25rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.stat .unit { font-size: .72rem; color: var(--dim); }
+.reels-wrap { position: relative; padding: 14px 0; }
+.reels { display: flex; justify-content: center; gap: 10px; }
+.reel {
+  width: calc(var(--cell) * 1.22);
+  height: calc(var(--cell) * 3);
+  overflow: hidden;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #0e0b1a 0%, #171226 50%, #0e0b1a 100%);
+  border: 1px solid var(--border);
+  box-shadow: inset 0 8px 14px rgba(0,0,0,.6), inset 0 -8px 14px rgba(0,0,0,.6);
+}
+.strip { will-change: transform; }
+.cell {
+  width: 100%;
+  height: var(--cell);
+  display: flex; align-items: center; justify-content: center;
+  font-size: calc(var(--cell) * .55);
+  line-height: 1;
+}
+.sym-bar {
+  font-size: calc(var(--cell) * .26);
+  font-weight: 800; letter-spacing: 2px;
+  color: var(--gold);
+  border: 2px solid var(--gold);
+  border-radius: 6px;
+  padding: 4px 10px;
+  background: rgba(245,197,66,.08);
+}
+.sym-seven {
+  font-size: calc(var(--cell) * .6);
+  font-weight: 900;
+  color: #ff9f43;
+  text-shadow: 0 2px 8px rgba(255,159,67,.55);
+  font-family: Georgia, "Times New Roman", serif;
+}
+.sym-wild {
+  font-size: calc(var(--cell) * .5);
+  font-weight: 900;
+  font-family: Georgia, serif;
+  background: linear-gradient(180deg, #9ecbff 20%, #4c6ef5 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.payline {
+  position: absolute;
+  left: 4px; right: 4px;
+  top: 50%;
+  height: 3px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, transparent, var(--red) 12%, var(--red) 88%, transparent);
+  pointer-events: none;
+  z-index: 2;
+  box-shadow: 0 0 8px rgba(255,93,93,.8);
+}
+.payline::before, .payline::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 12px; height: 12px;
+  background: var(--red);
+  transform: translateY(-50%) rotate(45deg);
+  border-radius: 2px;
+}
+.payline::before { left: -8px; }
+.payline::after { right: -8px; }
+.msg {
+  min-height: 1.6em;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.02rem;
+  margin: 10px 0 12px;
+  color: var(--gold);
+}
+.msg.bad { color: var(--red); }
+.controls { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.bet-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.bet-row .label { color: var(--dim); font-size: .85rem; margin-right: 2px; }
+.btn {
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, #3a2f63, #2c2350);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .15s ease, background .15s ease;
+}
+.btn:hover:not(:disabled) { box-shadow: 0 4px 14px rgba(0,0,0,.4); }
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn.bet.active {
+  border-color: var(--gold);
+  background: linear-gradient(180deg, #574a2a, #3d3320);
+  color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold) inset, 0 0 12px rgba(245,197,66,.35);
+}
+.btn.spin {
+  width: 100%;
+  padding: 14px;
+  font-size: 1.25rem;
+  letter-spacing: 4px;
+  border-color: #b98a2e;
+  background: linear-gradient(180deg, #7a5a1c, #5d4312);
+  color: #ffe9a8;
+  text-shadow: 0 1px 2px rgba(0,0,0,.6);
+}
+.btn.spin:disabled { background: linear-gradient(180deg, #4a4258, #38314a); color: #9d94b8; border-color: var(--border); }
+.paytable {
+  margin-top: 16px;
+  background: rgba(0,0,0,.25);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: .8rem;
+  color: var(--dim);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px 10px;
+  text-align: center;
+}
+.paytable .entry b { color: var(--text); font-variant-numeric: tabular-nums; }
+.paytable .title { grid-column: 1 / -1; text-align: center; color: var(--gold); font-weight: 700; letter-spacing: 1px; }
+.btn.ghost { margin-top: 14px; width: 100%; font-size: .9rem; background: transparent; }
+.testpanel {
+  margin-top: 10px;
+  background: #0d0a17;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: Consolas, "Cascadia Code", monospace;
+  font-size: .78rem;
+  line-height: 1.5;
+  color: #b9f6ca;
+  white-space: pre-wrap;
+  max-height: 220px;
+  overflow: auto;
+}
+@media (max-width: 520px) {
+  :root { --cell: 58px; }
+  .machine { padding: 16px 12px 22px; }
+  h1 { font-size: 1.15rem; }
+  .paytable { grid-template-columns: repeat(2, 1fr); }
+  .btn { padding: 9px 12px; }
+}
+</style>
+</head>
+<body>
+<div class="machine">
+  <h1>🎰 LUCKY CHACHA SLOTS</h1>
+  <div class="hud">
+    <div class="stat">
+      <span class="label">Balance</span>
+      <span class="value" id="balance">1000</span>
+      <span class="unit">VCD</span>
+    </div>
+    <div class="stat">
+      <span class="label">Last win</span>
+      <span class="value" id="last-win">0</span>
+      <span class="unit">VCD</span>
+    </div>
+  </div>
+  <div class="reels-wrap">
+    <div class="reels">
+      <div class="reel" id="reel-0"></div>
+      <div class="reel" id="reel-1"></div>
+      <div class="reel" id="reel-2"></div>
+    </div>
+    <div class="payline"></div>
+  </div>
+  <div class="msg" id="msg" aria-live="polite"></div>
+  <div class="controls">
+    <div class="bet-row">
+      <span class="label">Bet:</span>
+      <button class="btn bet" data-bet="1">1</button>
+      <button class="btn bet" data-bet="2">2</button>
+      <button class="btn bet" data-bet="5">5</button>
+      <button class="btn bet" data-bet="10">10</button>
+    </div>
+    <button class="btn spin" id="spin-btn">SPIN</button>
+  </div>
+  <div class="paytable">
+    <div class="title">PAYS — 3 IN A ROW · W = WILD</div>
+    <div class="entry">🍒🍒🍒 <b>4×</b></div>
+    <div class="entry">🍒🍒 <b>2×</b></div>
+    <div class="entry">🍋🍋🍋 <b>5×</b></div>
+    <div class="entry">🔔🔔🔔 <b>12×</b></div>
+    <div class="entry">BAR BAR BAR <b>25×</b></div>
+    <div class="entry">7 7 7 <b>50×</b></div>
+  </div>
+  <button class="btn ghost" id="test-btn">Run self-tests</button>
+  <pre id="test-output" class="testpanel" hidden></pre>
+</div>
+<script>
+"use strict";
+/* ============================================================
+ * ChaCha20 block function (RFC 8439) — written from scratch.
+ * 20 rounds (10 double rounds), 32-bit words, 256-bit key,
+ * 96-bit nonce, 32-bit little-endian counter.
+ * ============================================================ */
+const CHACHA_SIGMA = [0x61707865, 0x3320646e, 0x79622d32, 0x6b206574]; // "expand 32-byte k"
+
+function rotl32(x, n) {
+  return ((x << n) | (x >>> (32 - n))) >>> 0;
+}
+
+function chachaQuarterRound(x, a, b, c, d) {
+  let v;
+  v = (x[a] + x[b]) >>> 0; x[a] = v;
+  x[d] ^= v; x[d] = rotl32(x[d], 16);
+  v = (x[c] + x[d]) >>> 0; x[c] = v;
+  x[b] ^= v; x[b] = rotl32(x[b], 12);
+  v = (x[a] + x[b]) >>> 0; x[a] = v;
+  x[d] ^= v; x[d] = rotl32(x[d], 8);
+  v = (x[c] + x[d]) >>> 0; x[c] = v;
+  x[b] ^= v; x[b] = rotl32(x[b], 7);
+}
+
+/* Pure block function.
+ * keyWords: Uint32Array(8), nonceWords: Uint32Array(3), counter: uint32.
+ * Writes 64 output bytes (16 little-endian words) into `out`. */
+function chacha20Block(keyWords, nonceWords, counter, out) {
+  const x = new Uint32Array(16);
+  x[0] = CHACHA_SIGMA[0]; x[1] = CHACHA_SIGMA[1];
+  x[2] = CHACHA_SIGMA[2]; x[3] = CHACHA_SIGMA[3];
+  x[4] = keyWords[0]; x[5] = keyWords[1]; x[6] = keyWords[2]; x[7] = keyWords[3];
+  x[8] = keyWords[4]; x[9] = keyWords[5]; x[10] = keyWords[6]; x[11] = keyWords[7];
+  x[12] = counter >>> 0;
+  x[13] = nonceWords[0]; x[14] = nonceWords[1]; x[15] = nonceWords[2];
+  const init = x.slice();
+  for (let r = 0; r < 10; r++) {
+    chachaQuarterRound(x, 0, 4, 8, 12);
+    chachaQuarterRound(x, 1, 5, 9, 13);
+    chachaQuarterRound(x, 2, 6, 10, 14);
+    chachaQuarterRound(x, 3, 7, 11, 15);
+    chachaQuarterRound(x, 0, 5, 10, 15);
+    chachaQuarterRound(x, 1, 6, 11, 12);
+    chachaQuarterRound(x, 2, 7, 8, 13);
+    chachaQuarterRound(x, 3, 4, 9, 14);
+  }
+  for (let i = 0; i < 16; i++) {
+    const w = (x[i] + init[i]) >>> 0;
+    out[i * 4] = w & 0xff;
+    out[i * 4 + 1] = (w >>> 8) & 0xff;
+    out[i * 4 + 2] = (w >>> 16) & 0xff;
+    out[i * 4 + 3] = (w >>> 24) & 0xff;
+  }
+  return out;
+}
+
+function bytesToWords32(bytes) {
+  const w = new Uint32Array(bytes.length >> 2);
+  for (let i = 0; i < w.length; i++) {
+    w[i] = (bytes[i * 4] | (bytes[i * 4 + 1] << 8) | (bytes[i * 4 + 2] << 16) | (bytes[i * 4 + 3] << 24)) >>> 0;
+  }
+  return w;
+}
+
+class ChaCha20RNG {
+  constructor(keyBytes, nonceBytes) {
+    if (!keyBytes || keyBytes.length !== 32) throw new Error('ChaCha20RNG: key must be 32 bytes');
+    if (!nonceBytes || nonceBytes.length !== 12) throw new Error('ChaCha20RNG: nonce must be 12 bytes');
+    this.key = bytesToWords32(keyBytes);
+    this.nonce = bytesToWords32(nonceBytes);
+    this.counter = 0;
+    this.buf = new Uint8Array(64);
+    this.pos = 64;
+  }
+
+  _refill() {
+    chacha20Block(this.key, this.nonce, this.counter, this.buf);
+    this.counter = (this.counter + 1) >>> 0;
+    this.pos = 0;
+  }
+
+  nextU32() {
+    if (this.pos + 4 > this.buf.length) this._refill();
+    const b = this.buf;
+    const v = (b[this.pos] | (b[this.pos + 1] << 8) | (b[this.pos + 2] << 16) | (b[this.pos + 3] << 24)) >>> 0;
+    this.pos += 4;
+    return v;
+  }
+
+  /* Rejection sampling: uniform in [0, n) with no modulo bias. */
+  randomBelow(n) {
+    if (!Number.isInteger(n) || n <= 0) throw new Error('randomBelow: n must be a positive integer');
+    const limit = Math.floor(4294967296 / n) * n; // largest multiple of n that fits in 32 bits
+    let x;
+    do { x = this.nextU32(); } while (x >= limit);
+    return x % n;
+  }
+}
+
+/* ============================================================
+ * Reels, paytable, exact RTP, game state machine
+ * ============================================================ */
+const CHERRY = 'CHERRY', LEMON = 'LEMON', BELL = 'BELL', BAR = 'BAR', SEVEN = 'SEVEN', WILD = 'WILD';
+
+/* Each strip is exactly 20 stops.
+ * Per reel: 7 CHERRY, 5 LEMON, 4 BELL, 2 BAR, 1 SEVEN, 1 WILD. */
+const REEL_1 = [CHERRY, LEMON, BELL, CHERRY, BAR, LEMON, SEVEN, CHERRY, WILD, LEMON,
+                BELL, CHERRY, BAR, LEMON, CHERRY, BELL, CHERRY, LEMON, BELL, CHERRY];
+const REEL_2 = [CHERRY, WILD, LEMON, BELL, CHERRY, BAR, CHERRY, LEMON, SEVEN, BELL,
+                CHERRY, LEMON, BAR, CHERRY, BELL, LEMON, CHERRY, BELL, CHERRY, LEMON];
+const REEL_3 = [LEMON, CHERRY, BELL, CHERRY, LEMON, BAR, WILD, CHERRY, LEMON, BELL,
+                CHERRY, BAR, CHERRY, LEMON, SEVEN, CHERRY, BELL, LEMON, CHERRY, BELL];
+const REELS = [REEL_1, REEL_2, REEL_3];
+const STRIP_LEN = 20;
+
+/* Integer multipliers of the bet, 3 in a row on the payline.
+ * WILD substitutes for any symbol but never pays on its own. */
+const PAY_THREE = { [CHERRY]: 4, [LEMON]: 5, [BELL]: 12, [BAR]: 25, [SEVEN]: 50 };
+const PAY_CHERRY_12 = 2; // CHERRY on reels 1-2, any stop on reel 3
+
+function evaluateWin(stops) {
+  const nonWild = [];
+  for (const s of stops) if (s !== WILD) nonWild.push(s);
+  let mult = 0;
+  if (nonWild.length > 0) {
+    const s = nonWild[0];
+    let allMatch = true;
+    for (const t of nonWild) if (t !== s) { allMatch = false; break; }
+    if (allMatch) mult += PAY_THREE[s];
+  }
+  if (stops[0] === CHERRY && stops[1] === CHERRY) mult += PAY_CHERRY_12;
+  return mult;
+}
+
+/* EXACT RTP: enumerate all 20*20*20 = 8000 stop combinations.
+ * Integer sums only; the ratio is divided once at the end. */
+function calculateRTP() {
+  let totalPayout = 0;
+  let hits = 0;
+  for (let a = 0; a < STRIP_LEN; a++) {
+    for (let b = 0; b < STRIP_LEN; b++) {
+      const s1 = REELS[1][b];
+      for (let c = 0; c < STRIP_LEN; c++) {
+        const mult = evaluateWin([REELS[0][a], s1, REELS[2][c]]);
+        if (mult > 0) hits++;
+        totalPayout += mult;
+      }
+    }
+  }
+  const combinations = STRIP_LEN * STRIP_LEN * STRIP_LEN;
+  return {
+    totalPayout,
+    hits,
+    combinations,
+    rtp: totalPayout / combinations,
+    hitFrequency: hits / combinations
+  };
+}
+
+const ALLOWED_BETS = [1, 2, 5, 10];
+const STARTING_BALANCE = 1000;
+
+class SlotMachine {
+  constructor(rng) {
+    this.rng = rng;
+    this.balance = STARTING_BALANCE;
+    this.bet = 1;
+    this.lastWin = 0;
+    this.state = 'IDLE';
+    this.lastStops = null;
+  }
+
+  getState() {
+    return this.state;
+  }
+
+  placeBet(amount) {
+    if (!ALLOWED_BETS.includes(amount)) return { ok: false, code: 'ERR_BAD_BET' };
+    if (this.state !== 'IDLE') return { ok: false, code: 'ERR_NOT_IDLE' };
+    this.bet = amount;
+    return { ok: true };
+  }
+
+  spin() {
+    if (this.state !== 'IDLE') return { ok: false, code: 'ERR_NOT_IDLE' };
+    if (this.balance < this.bet) return { ok: false, code: 'ERR_INSUFFICIENT_BALANCE' };
+    this.balance -= this.bet;
+    this.state = 'SPINNING';
+    const indices = REELS.map(strip => this.rng.randomBelow(strip.length));
+    this.lastStops = indices.map((i, r) => REELS[r][i]);
+    return { ok: true, indices, stops: this.lastStops };
+  }
+
+  beginEvaluation() {
+    if (this.state !== 'SPINNING') return { ok: false, code: 'ERR_BAD_STATE' };
+    this.state = 'EVALUATING';
+    return { ok: true };
+  }
+
+  applyPayout(win) {
+    if (this.state !== 'EVALUATING') return { ok: false, code: 'ERR_BAD_STATE' };
+    this.state = 'PAYOUT';
+    this.balance += win; // integer VCD in, integer VCD out
+    this.lastWin = win;
+    this.state = 'IDLE';
+    return { ok: true, win };
+  }
+}
+
+/* ============================================================
+ * UI: reels, animation, controls
+ * ============================================================ */
+const SYM_META = {
+  CHERRY: { glyph: '🍒' },
+  LEMON: { glyph: '🍋' },
+  BELL: { glyph: '🔔' },
+  BAR: { text: 'BAR', cls: 'sym-bar' },
+  SEVEN: { text: '7', cls: 'sym-seven' },
+  WILD: { text: 'W', cls: 'sym-wild' }
+};
+
+function makeCell(sym) {
+  const cell = document.createElement('div');
+  cell.className = 'cell';
+  const m = SYM_META[sym];
+  const inner = document.createElement('span');
+  if (m.glyph) {
+    inner.textContent = m.glyph;
+  } else {
+    inner.textContent = m.text;
+    inner.className = m.cls;
+  }
+  cell.appendChild(inner);
+  return cell;
+}
+
+/* Four copies of each 20-stop strip (80 cells) so the window
+ * always has cells above and below the landing stop. */
+function buildStrips() {
+  const strips = REELS.map(strip => {
+    const el = document.createElement('div');
+    el.className = 'strip';
+    for (let copy = 0; copy < 4; copy++) {
+      for (const sym of strip) el.appendChild(makeCell(sym));
+    }
+    return el;
+  });
+  strips.forEach((el, i) => document.getElementById('reel-' + i).appendChild(el));
+  return strips;
+}
+
+const strips = buildStrips();
+const REEL_DURATIONS = [1.0, 1.6, 2.2]; // seconds; reels stop one after another
+
+function cellHeight() {
+  const first = document.querySelector('#reel-0 .cell');
+  return first ? first.getBoundingClientRect().height : 76;
+}
+
+/* The outcome index is chosen by the RNG before any animation runs;
+ * the animation merely travels to that stop.
+ * Lands with the chosen stop on the middle (payline) row:
+ * final offset k = 39 + idx, middle row = cell k+1 = 40 + idx (3rd copy). */
+function spinReel(i, idx) {
+  return new Promise(resolve => {
+    const strip = strips[i];
+    const h = cellHeight();
+    const dur = REEL_DURATIONS[i];
+    let settled = false;
+    const done = () => {
+      if (settled) return;
+      settled = true;
+      strip.removeEventListener('transitionend', onEnd);
+      resolve();
+    };
+    const onEnd = e => { if (e.propertyName === 'transform') done(); };
+    strip.addEventListener('transitionend', onEnd);
+    strip.style.transition = 'none';
+    strip.style.transform = 'translateY(0px)';
+    void strip.offsetHeight; // flush so the reset lands before the new transition
+    strip.style.transition = 'transform ' + dur + 's cubic-bezier(0.16, 0.72, 0.16, 1)';
+    strip.style.transform = 'translateY(' + (-(39 + idx) * h) + 'px)';
+    setTimeout(done, dur * 1000 + 350); // safety net if transitionend is missed
+  });
+}
+
+function animateReels(indices) {
+  return Promise.all(indices.map((idx, i) => spinReel(i, idx)));
+}
+
+const balanceEl = document.getElementById('balance');
+const lastWinEl = document.getElementById('last-win');
+const msgEl = document.getElementById('msg');
+const spinBtn = document.getElementById('spin-btn');
+const betBtns = Array.from(document.querySelectorAll('.btn.bet'));
+const testBtn = document.getElementById('test-btn');
+
+function updateHud() {
+  balanceEl.textContent = String(machine.balance);
+  lastWinEl.textContent = String(machine.lastWin);
+}
+
+function setControlsEnabled(enabled) {
+  spinBtn.disabled = !enabled;
+  betBtns.forEach(b => { b.disabled = !enabled; });
+  if (enabled) syncActiveBet();
+}
+
+function syncActiveBet() {
+  betBtns.forEach(b => b.classList.toggle('active', Number(b.dataset.bet) === machine.bet));
+}
+
+function showMsg(text, bad) {
+  msgEl.textContent = text || '';
+  msgEl.classList.toggle('bad', !!bad);
+}
+
+let busy = false;
+async function doSpin() {
+  if (busy) return;
+  const res = machine.spin();
+  if (!res.ok) {
+    if (res.code === 'ERR_INSUFFICIENT_BALANCE') showMsg('Not enough VCD', true);
+    else showMsg('Cannot spin right now', true);
+    return;
+  }
+  busy = true;
+  setControlsEnabled(false);
+  showMsg('');
+  updateHud();
+  await animateReels(res.indices);
+  machine.beginEvaluation();
+  const mult = evaluateWin(machine.lastStops);
+  const win = mult * machine.bet; // integer VCD
+  machine.applyPayout(win);
+  updateHud();
+  if (win > 0) showMsg('You won ' + win + ' VCD!');
+  else showMsg('No win — try again');
+  busy = false;
+  setControlsEnabled(true);
+}
+
+spinBtn.addEventListener('click', () => { doSpin(); });
+betBtns.forEach(b => b.addEventListener('click', () => {
+  const r = machine.placeBet(Number(b.dataset.bet));
+  if (r.ok) showMsg('');
+  else if (r.code === 'ERR_BAD_BET') showMsg('Invalid bet', true);
+}));
+testBtn.addEventListener('click', runSelfTests);
+document.addEventListener('keydown', e => {
+  if (e.key !== ' ' && e.key !== 'Enter') return;
+  const a = document.activeElement;
+  if (a === spinBtn || a === document.body) {
+    e.preventDefault();
+    doSpin();
+  }
+});
+
+/* ============================================================
+ * Self-tests
+ * ============================================================ */
+/* RFC 8439 section 2.3.2: key = 0x00..0x1f, counter = 1,
+ * nonce = 00 00 00 09 00 00 00 4a 00 00 00 00, expected block: */
+const TEST_EXPECTED_BLOCK = [
+  0x10, 0xf1, 0xe7, 0xe4, 0xd1, 0x3b, 0x59, 0x15, 0x50, 0x0f, 0xdd, 0x1f, 0xa3, 0x20, 0x71, 0xc4,
+  0xc7, 0xd1, 0xf4, 0xc7, 0x33, 0xc0, 0x68, 0x03, 0x04, 0x22, 0xaa, 0x9a, 0xc3, 0xd4, 0x6c, 0x4e,
+  0xd2, 0x82, 0x64, 0x46, 0x07, 0x9f, 0xaa, 0x09, 0x14, 0xc2, 0xd7, 0x05, 0xd9, 0x8b, 0x02, 0xa2,
+  0xb5, 0x12, 0x9c, 0xd1, 0xde, 0x16, 0x4e, 0xb9, 0xcb, 0xd0, 0x83, 0xe8, 0xa2, 0x50, 0x3c, 0x4e
+];
+
+function testChaChaVector() {
+  const key = new Uint8Array(32);
+  for (let i = 0; i < 32; i++) key[i] = i;
+  const nonce = new Uint8Array([0, 0, 0, 9, 0, 0, 0, 0x4a, 0, 0, 0, 0]);
+  const out = new Uint8Array(64);
+  chacha20Block(bytesToWords32(key), bytesToWords32(nonce), 1, out);
+  for (let i = 0; i < 64; i++) if (out[i] !== TEST_EXPECTED_BLOCK[i]) return false;
+  return true;
+}
+
+function testStrips() {
+  const want = { CHERRY: 7, LEMON: 5, BELL: 4, BAR: 2, SEVEN: 1, WILD: 1 };
+  return REELS.every(strip => {
+    if (strip.length !== STRIP_LEN) return false;
+    const counts = {};
+    for (const s of strip) counts[s] = (counts[s] || 0) + 1;
+    return Object.keys(want).every(sym => counts[sym] === want[sym]);
+  });
+}
+
+function runSelfTests() {
+  const t0 = performance.now();
+  const lines = [];
+
+  const chachaOk = testChaChaVector();
+  lines.push('ChaCha20 RFC 8439 sec 2.3.2 block vector: ' + (chachaOk ? 'PASS' : 'FAIL'));
+
+  const stripsOk = testStrips();
+  lines.push('Strip layout (20 stops, >=1 WILD, >=1 SEVEN each): ' + (stripsOk ? 'PASS' : 'FAIL'));
+
+  const exact = calculateRTP();
+  lines.push('Exact RTP: ' + (exact.rtp * 100).toFixed(4) + '% (' + exact.totalPayout + ' payout / ' + exact.combinations + ' combos)');
+  lines.push('Hit frequency: ' + (exact.hitFrequency * 100).toFixed(4) + '% (' + exact.hits + ' winning combos)');
+  lines.push('RTP within 92-96%: ' + (exact.rtp >= 0.92 && exact.rtp <= 0.96 ? 'PASS' : 'FAIL'));
+
+  /* 100,000 spins with a fixed seed, 1 VCD bet each. */
+  const seedKey = new Uint8Array(32);
+  const seedText = 'colibri-chacha20-slot-seed-00011';
+  for (let i = 0; i < 32; i++) seedKey[i] = seedText.charCodeAt(i) & 0xff;
+  const seedNonce = new Uint8Array([0x27, 0x18, 0x28, 0x18, 0x78, 0xb0, 0xd0, 0x26, 0x2e, 0x31, 0x63, 0x33]);
+  const rng = new ChaCha20RNG(seedKey, seedNonce);
+  let totalWin = 0;
+  const totalBets = 100000;
+  for (let i = 0; i < totalBets; i++) {
+    const idx = REELS.map(s => rng.randomBelow(s.length));
+    totalWin += evaluateWin(idx.map((j, r) => REELS[r][j]));
+  }
+  const observed = totalWin / totalBets;
+  lines.push('Observed RTP (100,000 spins, fixed seed): ' + (observed * 100).toFixed(4) + '% (' + totalWin + ' / ' + totalBets + ')');
+  lines.push('Done in ' + (performance.now() - t0).toFixed(0) + ' ms');
+
+  const panel = document.getElementById('test-output');
+  panel.textContent = lines.join('\n');
+  panel.hidden = false;
+  lines.forEach(l => console.log(l));
+  return { chachaOk, stripsOk, exact, observed };
+}
+
+/* ============================================================
+ * Init
+ * ============================================================ */
+function createGameRng() {
+  let x = (Date.now() ^ 0x9e3779b9) >>> 0;
+  const key = new Uint8Array(32);
+  const nonce = new Uint8Array(12);
+  for (let i = 0; i < 44; i++) {
+    x = (x * 1664525 + 1013904223) >>> 0;
+    if (i < 32) key[i] = x & 0xff;
+    else nonce[i - 32] = x & 0xff;
+  }
+  return new ChaCha20RNG(key, nonce);
+}
+
+const machine = new SlotMachine(createGameRng());
+updateHud();
+syncActiveBet();
+setControlsEnabled(true);
+showMsg('Pick a bet and pull the lever!');
+</script>
+</body>
+</html>

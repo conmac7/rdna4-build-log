@@ -1,0 +1,15 @@
+Done. `slot.html` (C:\colibri-v2.2.0-windows-x86_64\slot.html) is complete and verified end-to-end in Node with a DOM stub:
+
+- **ChaCha20 RFC 8439 §2.3.2 block vector: PASS** — the earlier draft had three bugs I fixed: Salsa20-style state layout (key/counter/nonce positions), Salsa20 diagonal rounds, and big-endian byte↔word conversion in `bytesToWords32`/`nextU32`. The expected test vector was also replaced with the genuine RFC 8439 one (verified against the fetched RFC text: `10 f1 e7 e4 d1 3b 59 15 …`).
+- **Exact RTP: 94.5875%** (7567 VCD / 8000 combos), **hit frequency: 18.3875%** (1471/8000) — within the 92–96% target.
+- **Observed RTP over 100,000 fixed-seed spins: 93.89%** — tracks the exact value.
+- Script passes `node --check`; no `Math.random`, no `crypto.getRandomValues`, no CDN/external files; all money math is integer VCD.
+
+All requirements are in place: 3×20-stop strips (each with 1 WILD + 1 SEVEN), WILD substitutes but never pays on its own, integer paytable, IDLE/SPINNING/EVALUATING/PAYOUT state machine with `placeBet`/`spin`/`getState` and error codes, bet 1/2/5/10 from a 1000 VCD start balance, CSS-transition reel animation (1.0/1.6/2.2 s staggered stops, outcome chosen by the RNG before any animation), "Not enough VCD" message, disabled controls while not IDLE, responsive layout, and a "Run self-tests" button that prints results to the on-page panel and `console.log`.
+
+How the strips/paytable were tuned to hit the RTP target:
+1. All three reels share the same composition (7 CHERRY, 5 LEMON, 4 BELL, 2 BAR, 1 SEVEN, 1 WILD per 20-stop strip) so the exact RTP collapses to clean per-symbol fractions over 8000.
+2. The 1 WILD per reel makes each triple probability ((n+1)/20)³ minus the all-WILD 1/8000 that pays nothing (WILD never pays on its own).
+3. High-payout symbols are kept rare: SEVEN (7/8000 × 50 = 0.35) and BAR (26/8000 × 25 = 0.65·… 0.08125) together form the RTP backbone, with BELL/LEMON/CHERRY triples filling the middle.
+4. The frequent CHERRY-on-reels-1-2 pair (49/400 × 2 = 0.245) supplies most of the 18.4% hit frequency without pushing RTP past the band.
+5. The integer sum works out to exactly 7567/8000 = 94.5875%, comfortably inside 92–96%, and 100k fixed-seed spins confirm it empirically (93.89%).
