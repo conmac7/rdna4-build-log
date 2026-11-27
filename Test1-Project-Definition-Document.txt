@@ -1,0 +1,171 @@
+# Project Definition Document
+**Slot Game — Desktop PC and Meta Quest 3**
+
+## 1. Document Control
+
+| Field | Value |
+|---|---|
+| Document ID | PDD-SLOT-001 |
+| Version | 0.1 (draft) |
+| Status | Draft — for stakeholder review |
+| Date | 2026-11-27 |
+| Project (working) name | [TBD] |
+| Owner | [TBD — Project Sponsor] |
+| Author | [TBD] |
+| Classification | Internal |
+
+**Revision History**
+
+| Version | Date | Description |
+|---|---|---|
+| 0.1 | 2026-11-27 | Initial draft based on confirmed project information. |
+
+**Status Labels**
+
+Three status labels are used throughout this document: **Confirmed** (a decision already taken and approved by stakeholders), **Proposal** (a recommendation put forward for decision; a proposal is not an approved requirement), and **TBD** (to be determined; no decision currently exists).
+
+**Terminology**
+
+| Term | Definition |
+|---|---|
+| Title | The slot game developed under this project. |
+| Desktop | Personal computer; supported operating system(s) TBD (OQ-1). |
+| Quest 3 | Meta Quest 3 standalone virtual reality headset. |
+| Steam | Desktop distribution platform for the desktop build. |
+
+## 2. Executive Summary
+
+This document defines a new slot game project. Four facts are confirmed: the project is a slot game; it will support desktop PCs; desktop distribution will be through Steam; and it will support Meta Quest 3 virtual reality.
+
+Beyond these facts, most product-level decisions remain open: game engine, programming language, slot mechanics and parameters (reel configurations, paylines, RTP, volatility, betting structure), regulatory classification, and any online or multiplayer scope. This document records the confirmed facts, distinguishes proposals from approved requirements, and marks undecided items as TBD. Section 13 lists the questions that require stakeholder decisions.
+
+## 3. Project Vision
+
+**Confirmed:** The project delivers a slot game playable on desktop PCs (distributed via Steam) and on Meta Quest 3 virtual reality.
+
+**Proposal (draft, pending approval):** A slot game that delivers a coherent core gameplay experience on desktop PCs and on Meta Quest 3 VR, based on a shared game design with platform-appropriate interaction.
+
+The final vision statement will be ratified as part of project charter sign-off (Section 14).
+
+## 4. Project Objectives
+
+The following objectives are **proposals** and require stakeholder approval:
+
+1. Deliver a functioning slot game build for desktop PCs, distributable through Steam.
+2. Deliver a functioning slot game build that supports Meta Quest 3 VR.
+3. Provide a consistent core gameplay experience across both confirmed platforms.
+4. Resolve all technology decisions (OQ-2, OQ-3) before detailed design begins.
+5. Define the slot game parameters through an approved design specification (OQ-4).
+6. [TBD — additional commercial or milestone objectives to be defined by the Project Sponsor.]
+
+## 5. Target Platforms
+
+| Platform | Type | Distribution | Status |
+|---|---|---|---|
+| Desktop PC | Personal computer | Steam | Confirmed. Supported operating system(s) TBD (OQ-1). |
+| Meta Quest 3 | Standalone VR headset | TBD (OQ-8) | Confirmed as a target platform. |
+
+## 6. Project Scope
+
+**In scope (confirmed):** development of a slot game; desktop PC support; Steam distribution of the desktop build; Meta Quest 3 VR support.
+
+**Proposed in scope (pending approval):** a single-player, locally played gameplay experience.
+
+**Proposed out of scope for the initial release (pending approval; see OQ-6 and OQ-7):** multiplayer features; online services (accounts, leaderboards, cloud saves); monetization (real-money wagering, in-app purchases, advertising).
+
+**Undecided:** mobile (smartphone/tablet) support — TBD; console support — TBD; VR headsets other than Meta Quest 3 — TBD.
+
+## 7. Functional Scope
+
+The following is a **proposed** high-level functional baseline, not an approved requirements specification. Slot mechanics and economic parameters are deliberately not defined in this document and are owned by the slot design specification (OQ-4).
+
+| # | Function Area | Description | Status |
+|---|---|---|---|
+| F-1 | Core slot gameplay | A slot game operating per an approved slot design specification (reel configuration, payline/ways structure, outcomes, and payouts are all TBD). | Proposed baseline; design TBD |
+| F-2 | Game flow | Application launch, main menu, gameplay session, and session results. Detailed flow TBD. | Proposed |
+| F-3 | Desktop input | Input scheme (keyboard/mouse, controller, or both) undecided. | TBD (OQ-9) |
+| F-4 | Steam integration | Store listing and Steamworks features undecided. | TBD (OQ-15) |
+| F-5 | VR interaction | Quest 3 interaction model and comfort requirements undecided. | TBD (OQ-10) |
+| F-6 | Settings | Audio, graphics, and gameplay settings; detail TBD. | Proposed |
+
+## 8. Non-Functional Considerations
+
+- **Performance.** Performance targets (frame rate, latency, load times) are TBD. The Quest 3 build must meet frame-rate requirements appropriate to VR comfort; specific values are to be defined in the design phase.
+- **Usability.** Desktop and VR interaction models differ; usability requirements are to be defined per platform (TBD).
+- **Localization.** Primary language and any additional languages are TBD (OQ-11).
+- **Accessibility.** Proposal to assess accessibility requirements (input alternatives, display settings) during design; scope TBD.
+- **Security and privacy.** Out of scope to the extent online services are not included; to be revisited if online features are added (OQ-6).
+- **Legal and regulatory.** The game's classification (real-money gambling versus entertainment-only) is undecided and materially affects compliance obligations, target audience, age rating, and platform policies (OQ-5). This is treated as a critical decision, not a default assumption.
+
+## 9. Technical Constraints
+
+1. No game engine has been selected; the engine selected (OQ-2) must support both confirmed platforms.
+2. No programming language or toolchain has been selected (OQ-3).
+3. The technical approach must support Steam distribution on desktop PCs and native operation on the Meta Quest 3, a standalone headset running its own operating system.
+4. Supported desktop operating system(s) are TBD (OQ-1); this affects build targets and the testing matrix.
+5. Whether a shared codebase or separate implementations will be used across platforms is undecided (OQ-14).
+
+## 10. Dependencies
+
+**External**
+- Steam (Valve) — developer account and Steamworks access for the desktop build.
+- Meta Quest platform — developer access and development tooling for Quest 3.
+- Test hardware — desktop PC(s) and Meta Quest 3 headset(s); procurement responsibility TBD.
+
+**Internal**
+- Stakeholder decisions on all open questions in Section 13.
+- Approved slot design specification (owner TBD, OQ-4).
+- Development team staffing (roles and size TBD).
+- Budget and schedule baseline (outside this document's scope; required before project initiation).
+
+## 11. Risks
+
+| # | Risk | Potential Impact | Proposed Mitigation |
+|---|---|---|---|
+| R-1 | Undecided regulatory classification (real-money vs. entertainment). | Rework, store rejection, jurisdictional restrictions. | Resolve OQ-5 early; legal review before detailed design. |
+| R-2 | Two platforms with very different hardware (desktop PC, standalone VR headset). | Cost and schedule overrun. | Early technology decisions (OQ-2, OQ-3); early prototypes on both platforms. |
+| R-3 | Delay in technology selection. | Downstream decisions blocked. | Set decision deadlines for OQ-2 and OQ-3. |
+| R-4 | VR comfort and interaction unknowns. | Poor Quest 3 user experience. | Early VR playtests; defined comfort guidelines. |
+| R-5 | Third-party platform policy changes (Steam, Meta). | Distribution constraints. | Monitor platform policies; keep design flexible. |
+| R-6 | Scope ambiguity from undecided product parameters. | Rework and disputes. | Require the approved slot design specification before detailed design (OQ-4). |
+
+## 12. Assumptions
+
+Assumptions are accepted as true for planning purposes but are not verified. If any assumption proves false, this document will be revised.
+
+- **A-1:** The confirmed facts in Section 5 remain valid throughout the definition phase.
+- **A-2:** Answers to the open questions in Section 13 will be provided by the Project Sponsor or a designated delegate within the definition phase.
+- **A-3:** An authoritative slot design specification will be produced by a designated owner before detailed design begins.
+- **A-4:** Development and test hardware for both platforms will be available to the team (procurement responsibility TBD).
+- **A-5:** Until OQ-5 is resolved, planning assumes no real-money wagering and therefore no immediate gambling regulatory obligations. This assumption requires validation by the Project Sponsor.
+
+## 13. Open Questions
+
+The following questions require stakeholder decisions; owners are TBD unless otherwise stated.
+
+- **OQ-1.** Which desktop operating system(s) does "desktop PC" cover (Windows, macOS, Linux, or a subset)?
+- **OQ-2.** Which game engine will be used, and what are the selection criteria?
+- **OQ-3.** Which programming language(s) and toolchain will be used?
+- **OQ-4.** Who owns the slot design specification (reel configuration, paylines/ways, RTP, volatility, betting structure), and when will it be approved?
+- **OQ-5.** Is the game intended for real-money play (regulated gambling) or for entertainment-only (non-monetary) purposes? Which jurisdictions are targeted?
+- **OQ-6.** Are multiplayer and online services confirmed out of scope for the initial release?
+- **OQ-7.** Is monetization confirmed out of scope for the initial release?
+- **OQ-8.** What is the distribution channel for the Meta Quest 3 build (for example, the Meta Quest Store)?
+- **OQ-9.** What is the desktop input scheme (keyboard/mouse, controller, or both)?
+- **OQ-10.** What is the Quest 3 interaction model (handheld controllers, hand tracking, or both)?
+- **OQ-11.** Which languages will the game support?
+- **OQ-12.** Who is the target audience, and what age rating is intended?
+- **OQ-13.** What are the budget, schedule, and team composition?
+- **OQ-14.** Is a shared codebase across both platforms intended?
+- **OQ-15.** Which Steamworks features (store page, achievements, etc.) should be enabled?
+
+## 14. Acceptance Criteria for the Project Definition Document
+
+This document will be considered accepted when all of the following are met:
+
+1. All **Confirmed** items have been revalidated by the Project Sponsor.
+2. Each **Proposal** has been explicitly approved or rejected, with rejections reflected in an updated version of this document.
+3. Every open question in Section 13 is either resolved or explicitly deferred, with a named owner and a target date.
+4. A slot design specification owner is assigned (OQ-4), and the regulatory classification question (OQ-5) has a recorded decision or a documented deferral.
+5. The technology decisions (OQ-2, OQ-3) are recorded, or their deferral has a documented review date.
+6. Written approval has been obtained from the Project Sponsor and the designated technical lead.
