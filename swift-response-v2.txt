@@ -1,0 +1,31 @@
+Done. Report:
+
+## What changed (only in `slot.html`)
+
+1. **`createGameRng()`** (lines 688–695): replaced the `Date.now()`-seeded LCG with `crypto.getRandomValues()` filling a 44-byte `Uint8Array` — first 32 bytes become the ChaCha20 key, last 12 the nonce. Throws if `crypto.getRandomValues` is unavailable. Fresh pair per page load; key/nonce are never displayed or logged.
+2. **Init block** (lines 697–710): `machine` is now initialized in a `try/catch`. On failure it fails securely — `setControlsEnabled(false)` plus the message *"Secure random source unavailable - game disabled."* No `Date.now`/`Math.random`/LCG/constant fallback exists anywhere.
+3. **`doSpin()` guard** (line 571): `if (busy || !machine) return;` — prevents the Space/Enter keyboard path from operating the game when init has failed.
+
+Nothing else was touched: ChaCha20 core, RFC test vector, strips, paytable, state machine, UI, CSS, animation, and the fixed-seed 100k-spin self-test are byte-identical to before.
+
+## Tests actually executed
+
+Executed the file's real `<script>` in Node v22.12.0 (Adobe-bundled) with a DOM stub, in two contexts:
+
+| Test | Result |
+|---|---|
+| `node --check` syntax on extracted script | **PASS** |
+| RFC 8439 §2.3.2 ChaCha20 block vector (via `runSelfTests()`) | **PASS** |
+| Exact theoretical RTP | **PASS** — 94.5875% |
+| Hit frequency | **PASS** — 18.3875% |
+| Deterministic 100,000-spin self-test (fixed seed) | **PASS** — 93.8890% (93889/100000), unchanged |
+| Init uses `crypto.getRandomValues` exactly once for exactly 44 bytes; `machine.rng` is a `ChaCha20RNG` | **PASS** |
+| No-crypto context: no crash, `machine === null`, spin button disabled, error message shown | **PASS** |
+| Static scan: zero `Date.now`/`Math.random`/LCG constants; `getRandomValues` referenced only inside `createGameRng` (3 uses) | **PASS** |
+
+15/15 checks passed.
+
+## Remaining limitations
+
+- The no-crypto fail path was verified via the stubbed sandbox, not a real browser; in practice all modern browsers expose `crypto.getRandomValues`, so that branch is a belt-and-braces guard.
+- DOM behavior was verified through stubs only; since UI/CSS/animation code was not modified, no browser re-test of rendering was needed.
