@@ -1,9 +1,3 @@
-Both summaries processed in full
-
-I have read both uploaded files, including the complete 1,692-line summary from 3:12 PM and the complete 839-line summary from 6:54 PM on November 28, 2026.
-
-I have consolidated them chronologically, preserving earlier decisions that remain relevant and giving priority to the newer Gemma-specific decisions.
-
 # **1. Consolidated project understanding**
 
 ## **Overall objective**
