@@ -1,0 +1,149 @@
+but for every-day chat and questions.
+For example, some of those:
+a. 'Last year I saw on the internet a LED buld that is sold ONLY in Emirates and have 20 years life spawn.'
+b. 'Among Civilization fans and players which is the favorable one:
+a. Civilization IV
+b. Civilization V'
+c. 'the Following PC game: store.steampowered.com/app/1336490/Against_the_Storm/
+has the tag (among other tags it has) 'Simulation'. Find reliable, current sources and cite factual claims, and tell me what aspects of the game is 'supposed' to be 'simulated'.'
+d. 'I know that in U.S there is a large percentage of the population with ADD and ADHD.
+Questions:
+1.	Why is that(1a) and why there is so much difference with other countries(1b), for example in Greece its barely 0.1% of the population.
+2.	How much percentage of the U.S population has it'
+e. 'Back in the days autotune was the tool all professional singer use. Nowdays with AI and LLMs, what is the equivalent?
+Do not make assumptions if you do not know 100% the correct answer. Use reliable, current sources and cite factual claims.'
+f. 'Currently, my primary drive is a Samsung 850 EVO 512 GB SATA III SSD.
+I am thinking of buying a Kingston SKC3000S/1024G.
+I play the following games:
+1.	Last Epoch
+2.	7 Days to Die
+3.	X4: Foundations
+4.	No Man's Sky
+5.	Elite Dangerous in VR mode
+6.	American Truck Simulator in VR mode
+My current rig specifications:
+PSU: Gigabyte Aorus Elite P850W
+Motherboard: Gigabyte B550 AORUS Elite V2 (rev. 1.2)
+CPU: AMD Ryzen 7 5700X
+CPU Cooler: Thermalright Peerless Assassin 140
+RAM: Corsair Vengeance 32 GB (2×16 GB) DDR4-3200 MHz
+GPU: Gigabyte Radeon RX 9070 XT — 16 GB
+SSD: Samsung 860 EVO 500 GB (SATA III)
+HDD1: Seagate 1 TB (SATA III)
+HDD2: WD 1 TB (SATA III)
+OS: Windows 11 (debloated, local-only account)
+Monitor 1: AOC 27G15N2 VA 1080p/180 Hz (27")
+Monitor 2: BenQ EW2730 VA 1080p/60 Hz (27")
+VR Headset: Meta Quest 3 with S3 Pro HeadStrap
+Will I notice any difference if I replace the drive in the following situations?
+a. When playing games
+b. In everyday use
+c. When prompting local LLMs
+If so, will the difference be substantial or noticeable but subtle?
+Do not make assumptions if you do not know 100% the correct answer. Use reliable, current sources and cite factual claims.'
+g. 'Does the Xbox runs a version of windows, or it is completely different operating system? '
+h. 'On windows 11 with Handbrake and transcoding a, x265 movie with 1500 kbps to an AV1 1300 kbps with avg bitrate (and not Constant Qality) will I see any meaningful difference in the video quality if I enable Multi-Pass Encoding? WIll a human eye see the difference or will be that small, it will perceive it as the same?'
+i. 'In Australia if a Trucker (Class 8), freelancer take a contract with triple trailers, FULL load on all trailers, an the travel is from Melbourne to Darwin, what is the average money should expect to earn?
+Do not make assumptions if you do not know 100% the correct answer. Use reliable, current sources and cite factual claims.'
+j. 'in messenger app (facebook) you can sent voice messages. Can i send video messages also?'
+k. 'How is JEPA different from LLMs?
+Do not make assumptions if you do not know 100% the correct answer. Use reliable, current sources and cite factual claims.'
+l. 'Im watching a youtube video titled: ' Why I Can't Play 'Modern' Open Worlds After This.'
+In the video describes the PC Game Red Dead Redemption 2 and say that the characters
+have schedules, That the mud actually reacted to the lightning when rained,
+That the characters are independent from you, they dont just wait for you to
+react with them, doing nothing.
+I argue
+because, as you already know, it is not simulated but scripted. 
+In another
+instant of the video say 'when arto get shot, doesnt just lose health bars. He
+winces, the impact throws his soulders back. In the game if you shoot someone
+in the leg they don’t keep running they fall, they crawl, they try to shoot you
+back from the ground’. But this is all just a well-done scripts, as you know. For
+example when you shoot someone to the leg, the game doesn’t ‘simulates’/calculate
+the shot and the leg, and cocludes that the character must fall down. Instead
+there is a script that triggers and – in the simplest for – says, if <shot
+someone to the leg> do <this>.
+My response to that video is the following:
+‘To a certain extent, this assessment is correct: non-player characters follow
+predefined schedules, and the game world is designed to appear alive.
+However, there is an important caveat. This behavior does not constitute true
+simulation. Rather, it represents what could be described as scripted
+simulation.
+The systems
+in Red Dead Redemption 2 rely heavily on pre-authored behaviors,
+conditional triggers, and tightly controlled state machines. While these
+systems are executed with exceptional polish—such as mud deformation reacting
+to weather events or NPCs performing routine activities independently of the
+player—they remain fundamentally deterministic and bounded by scripts. The
+illusion of autonomy is achieved through extensive content authoring rather
+than emergent systemic interaction.
+In other
+words, the world feels reactive and alive not because it is dynamically
+simulating complex systems, but because it is meticulously choreographed to
+give that impression.’
+Your tasks:
+1.       Add a direct comparison to
+truly systemic or emergent games (e.g., simulation-heavy titles)
+2.       Make in more rich and add more arguments.
+3.       Enhance it'
+m. 'How is Star Citizen world (Map) compared to Elite Dangerous and X4: Foundations or Eve Online?
+Is like Elite Dangerous, a vast solar system, galaxy or universe?
+Is like X4: Foundations and Eve Online, sector-based?'
+n. 'Does KINGDOM COME DELIVERANCE 2 has a end-game system(1) is it story based only so when you complete the story game ends(3), is a sanbox game and you are freely to do anything you like/want, is the world simulated or scripted(4)'
+o. 'Does Saudi Arabia has considerable military power or it is a minor?'
+p. 'List for me thee first world war or 2nd world war movies, but in altrentative history '
+q. 'As of 2026, are there still any operational lighthouses with lighthouse keeper positions, or is that occupation largely a thing of the past?'
+r. 'After Human(s) on the EARTH which species (animal or else) is the second-most intelligent?'
+s. 'Which of the following aRPG games has the most end-game content:
+a. Jotunnslayer: Hordes of Hel
+b. Grim Dawn
+c. Last Epoch
+d. Dwarven Realms
+e. Achilles: Survivor
+f. Achilles: Legends Untold
+g. Dragonkin: The Banished
+If you do not have up-to-date information, search for reliable sources on the internet. Do not make assumptions.'
+t. 'Does Mount & Blade II: Bannerlord has simulation mechanics or it is scripted? Mostly i mean the life, and the NPCs. Do not make assumptions if you do not know 100% the correct answer. If you do not have up-to-date information, search for reliable sources on the internet.'
+u. 'Path of Exile has various endgame activities, including mapping, bossing, Heist, Delve, Simulacrum, crafting, and market trading. Each offers different goals, mechanics, and rewards.
+Using this only as an example of the format and level of detail required, list and briefly explain the endgame activities for these PC games:
+1. V Rising
+2. Last Epoch
+3. Grim Dawn
+4. Dwarven Realms
+5. Achilles: Survivor
+6. Achilles: Legends Untold
+7. Dragonkin: The Banished
+Requirements:
+- Use reliable, current sources and cite factual claims.
+- Identify activities specific to each game. Do not use the *Path of Exile* example as a checklist or assume that similar activities exist.
+- Briefly explain what each activity involves and its purpose or rewards.
+- Distinguish genuine endgame activities from general replayability, ordinary progression, and post-campaign gameplay.
+- Verify that each activity is available in the current version. Clearly identify planned, announced, removed, or unverified content when relevant.
+- If a game has no clearly defined endgame, state that explicitly. Do not invent activities to fill the list.
+- If reliable evidence is insufficient, acknowledge the uncertainty rather than guessing.'
+v. 'Among fans, which game of the pc game series 'Elemental series' (Developer/Publisher is Stardock) is considered to be the most favorable?'
+w. 'Give me information about the PC Game 'Black Desert', regarding of its:
+1. Gameplay: Core Gameplay Loop(1a), Main activities(1b), progression(1c), long-term replayability(1d)
+2. Mechanics(2a), systems(2b)
+3. world
+4. NPCs
+5. economy (if any)
+6. Sandbox Structure and Endgame: Is the game fully sandbox, partially sandbox, or primarily campaign-based? Is there a defined ending, and can you continue playing after completing the main campaign. If gameplay continues:
+6a) What endgame activities are available?
+6b) What endgame content is  available?
+If the game effectively ends after the main campaign, state that explicitly.
+Requirements: Use reliable, current sources and cite factual claims. For each simulation category, state whether it is fully simulated, partially simulated, scripted, absent, or unverified. Briefly explain the reasoning behind each classification. Do not assume that a system exists merely because it is common in the genre. Explicitly acknowledge missing evidence and uncertainty rather than guessing.'
+x. 'Compare No Rest for the Wicked and Path of Exile
+a. Mechanics
+b. Skill tree(s)
+c. special features
+d. world
+e. Items and item mechanics
+f. classes and class build
+g. end-game content
+h. end-game mechanics
+i. replayability'
+Do not make assumptions if you do not know 100% the correct answer. Use reliable, current sources and cite factual claims and always prioritize real-time data. Never hallucinate answers without sources. Use web_search first, never skip it.
+Search multiple relevant and independent websites to gather information, verify facts, and cross-check findings. Do not rely exclusively on search result snippets. Verify important factual claims against at least two independent sources. If sources conflict, identify the discrepancy and explain it. If information cannot be verified, explicitly state that rather than guessing
+
